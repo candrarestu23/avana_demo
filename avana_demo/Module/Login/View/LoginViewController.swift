@@ -49,8 +49,10 @@ extension LoginViewController: LoginButtonDelegate {
         let token = result?.token?.tokenString
         let request = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, name"], tokenString: token, version: nil, httpMethod: .get)
         request.start(completionHandler: {connection, result, error in
-            self.setNewController()
-            self.firebaseLogin(accessToken: token ?? "")
+            if result != nil {
+                self.setNewController()
+                self.firebaseLogin(accessToken: token ?? "")
+            }
         })
     }
     

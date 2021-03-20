@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import Kingfisher
 import SkeletonView
+import FBSDKLoginKit
 
 class HomeViewController: UIViewController {
     
@@ -19,12 +20,14 @@ class HomeViewController: UIViewController {
     var data: [HomeModel] = []
     var pages: Int = 1
     var isLoading = true
-    
+    lazy var logouBtn:UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupTableView()
         initViewModel()
+        setupNavButton()
         navigationItem.title = "Home"
         DispatchQueue.global(qos: .background).async {
             self.viewModel.getGames(storeId: 1, pageNumber: 1, pageSize: 10, upperPrice: 50)
@@ -43,6 +46,22 @@ class HomeViewController: UIViewController {
         footer.addSubview(loadingIndicator)
         loadingIndicator.startAnimating()
         tableView.tableFooterView = footer
+    }
+    
+    private func setupNavButton(){
+        logouBtn.setTitle("Logout", for: .normal)
+        logouBtn.setTitleColor(.blue, for: .normal)
+        logouBtn.addTarget(self, action: #selector(self.logoutClicked), for: .touchUpInside)
+        let rightBarButton = UIBarButtonItem(customView:logouBtn)
+        self.navigationItem.rightBarButtonItem = rightBarButton
+    }
+    
+    @objc func logoutClicked(){
+        LoginManager().logOut()
+        let viewController = UINavigationController(rootViewController: LoginViewController())
+        UIApplication.shared.windows.first?.rootViewController = viewController
+        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     private func initViewModel(){
