@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>191729244492-37rbetm5g0atl4f18ka916m6quk3fl9j.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.191729244492-37rbetm5g0atl4f18ka916m6quk3fl9j</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA7Ach6H2so_rami2v1F5CfmAN3-7SziyY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>191729244492</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.testproject.id.avana-test</string>
+	<key>PROJECT_ID</key>
+	<string>avana-test-69b4a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>avana-test-69b4a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:191729244492:ios:11647e5562af37d5b297e9</string>
+</dict>
+</plist>
