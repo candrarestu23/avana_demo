@@ -8,9 +8,10 @@
 import UIKit
 import RxSwift
 import FirebaseStorage
+import SkeletonView
 
 class DetailViewController: UIViewController {
-
+    
     @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
@@ -35,6 +36,12 @@ class DetailViewController: UIViewController {
         DispatchQueue.global(qos: .background).async {
             self.viewModel.getDetailGames(id: self.id)
         }
+        
+        DispatchQueue.main.async {
+            self.productImageView.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+            self.titleLabel.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+            self.priceLabel.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+        }
     }
     
     private func initViewModel(){
@@ -45,20 +52,25 @@ class DetailViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.loadingIndicatorView.isHidden = false
                     self.loadingIndicatorView.startAnimating()
-                    self.btnCheckout.titleLabel?.text = ""
+                    self.btnCheckout.setTitle("", for: .normal)
                 }
- 
+                
             } else {
                 DispatchQueue.main.async {
                     self.loadingIndicatorView.isHidden = true
-                    self.btnCheckout.titleLabel?.text = "Checkout"
+                    self.btnCheckout.setTitle("Checkout", for: .normal)
                 }
             }
         }
         
         viewModel.data.observe(disposable) { (data) in
             guard let data = data else { return }
+            self.data = data
             DispatchQueue.main.async {
+                self.productImageView.hideSkeleton(transition: .crossDissolve(0.25))
+                self.priceLabel.hideSkeleton(transition: .crossDissolve(0.25))
+                self.titleLabel.hideSkeleton(transition: .crossDissolve(0.25))
+                
                 self.productImageView.kf.setImage(with: data.info?.thumb?.toUrl)
                 self.titleLabel.text = "Title: \n\(data.info?.title ?? "")"
                 self.priceLabel.text = "Price: $\(data.cheapestPriceEver?.price ?? "")"
@@ -86,7 +98,7 @@ extension DetailViewController: UIImagePickerControllerDelegate, UINavigationCon
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
-        guard let imageData = image.pngData() else { return }
+        guard let imageData = image.pngData(), let data = self.data else { return }
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         let ref = storage.child("image/file.jpg")
@@ -95,7 +107,10 @@ extension DetailViewController: UIImagePickerControllerDelegate, UINavigationCon
                 print("upload failed")
                 return
             }
-            self.viewModel.isLoading.value = false
+            DispatchQueue.main.async {
+                self.showToast(message: "Upload Success", font: .systemFont(ofSize: 20))
+            }
+            self.viewModel.uploadUserData(data: data)
             self.storage.child("image/file.jpg").downloadURL(completion: {url, error in
                 guard let url = url, error == nil else { return }
                 let urlString = url.absoluteString

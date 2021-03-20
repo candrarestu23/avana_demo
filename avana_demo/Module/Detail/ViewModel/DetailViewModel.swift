@@ -8,7 +8,8 @@
 import Foundation
 import Moya
 import RxSwift
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 class DetailViewModel{
     private let disposeBag = DisposeBag()
@@ -32,7 +33,29 @@ class DetailViewModel{
         }.disposed(by: disposeBag)
     }
     
-    func uploadUserData(){
-        let db = FireStore
+    func uploadUserData(data: DetailModel){
+        guard let user = Auth.auth().currentUser else {
+            print("user not found")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        db.collection("users").addDocument(data: [
+            "uid" : user.uid,
+            "name" : user.displayName,
+            "email": user.email,
+            "phone" : user.phoneNumber,
+            "gameId" : data.info?.steamAppId,
+            "gameName" : data.info?.title,
+            "gamePrice" : data.cheapestPriceEver?.price
+        ]) { error in
+            self.isLoading.value = false
+            if let error = error {
+                print("Error Adding Document: \(error)")
+            } else {
+                print("Document Added to firestore")
+            }
+            
+        }
     }
 }

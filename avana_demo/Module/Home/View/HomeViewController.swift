@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import Kingfisher
+import SkeletonView
 
 class HomeViewController: UIViewController {
     
@@ -34,6 +35,14 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UINib(nibName: HomeTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: HomeTableViewCell.identifier)
+        
+        let footer = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.color = .gray
+        loadingIndicator.center = footer.center
+        footer.addSubview(loadingIndicator)
+        loadingIndicator.startAnimating()
+        tableView.tableFooterView = footer
     }
     
     private func initViewModel(){
@@ -54,17 +63,35 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        data.count
+        return self.isLoading == true ? 8 : data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier) as? HomeTableViewCell else { return UITableViewCell() }
-        let data = self.data[indexPath.row]
-        cell.productImageView.kf.setImage(with: data.thumb?.toUrl)
-        cell.ratingLabel.text = "Rating: \(data.steamRatingPercent ?? "")"
-        cell.titleLabel.text = data.title ?? ""
-        cell.dateLabel.text = data.releaseDate?.dateFromInt()
-        cell.PriceLabel.text = "$\(data.normalPrice ?? "")"
+        
+        if self.isLoading {
+            cell.productImageView.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+            cell.ratingLabel.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+            cell.titleLabel.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+            cell.dateLabel.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+            cell.PriceLabel.showAnimatedGradientSkeleton(usingGradient: SkeletonGradient(baseColor: .clouds), transition: .crossDissolve(0.25))
+        } else {
+            cell.productImageView.hideSkeleton(transition: .crossDissolve(0.25))
+            cell.ratingLabel.hideSkeleton(transition: .crossDissolve(0.25))
+            cell.titleLabel.hideSkeleton(transition: .crossDissolve(0.25))
+            cell.dateLabel.hideSkeleton(transition: .crossDissolve(0.25))
+            cell.PriceLabel.hideSkeleton(transition: .crossDissolve(0.25))
+        }
+        
+        if self.data.count > 0 {
+            let data = self.data[indexPath.row]
+            cell.productImageView.kf.setImage(with: data.thumb?.toUrl)
+            cell.ratingLabel.text = "Rating: \(data.steamRatingPercent ?? "")"
+            cell.titleLabel.text = data.title ?? ""
+            cell.dateLabel.text = data.releaseDate?.dateFromInt()
+            cell.PriceLabel.text = "$\(data.normalPrice ?? "")"
+        }
+
         return cell
     }
 }

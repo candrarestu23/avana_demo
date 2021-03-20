@@ -36,6 +36,7 @@
 		CE4F477926059195004091C9 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE4F477726059195004091C9 /* DetailViewController.xib */; };
 		CE4F477F260594D6004091C9 /* DetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4F477E260594D6004091C9 /* DetailModel.swift */; };
 		CE4F478326059641004091C9 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4F478226059641004091C9 /* DetailViewModel.swift */; };
+		CE4F47B92605CCB0004091C9 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4F47B82605CCB0004091C9 /* UIViewController+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		CE4F477726059195004091C9 /* DetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 		CE4F477E260594D6004091C9 /* DetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailModel.swift; sourceTree = "<group>"; };
 		CE4F478226059641004091C9 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		CE4F47B82605CCB0004091C9 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +289,7 @@
 				CE4F476426057626004091C9 /* String+Ext.swift */,
 				CE4F476826057647004091C9 /* UIButton+Ext.swift */,
 				CE4F47722605844D004091C9 /* Int+Ext.swift */,
+				CE4F47B82605CCB0004091C9 /* UIViewController+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				CE4C3FC92604418F001E7FDB /* LoginViewController.swift in Sources */,
 				CE4F476926057647004091C9 /* UIButton+Ext.swift in Sources */,
 				CE4F46C42605482A004091C9 /* EndPointType.swift in Sources */,
+				CE4F47B92605CCB0004091C9 /* UIViewController+Ext.swift in Sources */,
 				CE4C3FC52604418F001E7FDB /* AppDelegate.swift in Sources */,
 				CE4F476E260576DF004091C9 /* HomeTableViewCell.swift in Sources */,
 				CE4F477826059195004091C9 /* DetailViewController.swift in Sources */,
